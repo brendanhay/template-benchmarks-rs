@@ -1,5 +1,5 @@
-use ::liquid::{model::Value, Object, ParserBuilder};
 use criterion;
+use liquid::{model::Value, Object, ParserBuilder};
 use serde_yaml;
 
 pub fn big_table(b: &mut criterion::Bencher<'_>, size: &usize) {
@@ -15,13 +15,7 @@ pub fn big_table(b: &mut criterion::Bencher<'_>, size: &usize) {
     let template = ParserBuilder::with_stdlib()
         .build()
         .unwrap()
-        .parse(
-            "<table>
-{% for row in table %}
-<tr>{% for col in row %}<td>{{ col|escape }}</td>{% endfor %}</tr>
-{% endfor %}
-</table>",
-        )
+        .parse(BIG_TABLE_TEMPLATE)
         .unwrap();
 
     let mut globals = Object::new();
@@ -29,6 +23,12 @@ pub fn big_table(b: &mut criterion::Bencher<'_>, size: &usize) {
 
     b.iter(|| template.render(&globals));
 }
+
+static BIG_TABLE_TEMPLATE: &'static str = "<table>
+  {% for row in table %}
+    <tr>{% for col in row %}<td>{{ col|escape }}</td>{% endfor %}</tr>
+  {% endfor %}
+</table>";
 
 pub fn teams(b: &mut criterion::Bencher<'_>, _: &usize) {
     let parser = ParserBuilder::with_stdlib().build().unwrap();
@@ -39,7 +39,7 @@ pub fn teams(b: &mut criterion::Bencher<'_>, _: &usize) {
     b.iter(|| template.render(&data));
 }
 
-static TEAMS_TEMPLATE: &'static str = "<html>
+static TEAMS_TEMPLATE: &'static str = r#"<html>
   <head>
     <title>{{year}}</title>
   </head>
@@ -47,13 +47,13 @@ static TEAMS_TEMPLATE: &'static str = "<html>
     <h1>CSL {{year}}</h1>
     <ul>
     {% for team in teams %}
-      <li class=\"{% if forloop.first %}champion{% endif %}\">
+      <li class="{% if forloop.first %}champion{% endif %}">
       <b>{{team.name}}</b>: {{team.score}}
       </li>
     {% endfor %}
     </ul>
   </body>
-</html>";
+</html>"#;
 
 static TEAMS_DATA: &'static str = "
 year: 2015

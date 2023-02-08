@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+output="$(mktemp -p "$PWD")"
+
+trap 'rm -rf "$output"' EXIT
+
+cargo bench --color=never | tee "$output"
+
+cp "target/criterion/Compiled - Big Table/report/violin.svg" compiled-big-table.svg
+cp "target/criterion/Compiled - Teams/report/violin.svg" compiled-teams.svg
+cp "target/criterion/Runtime - Big Table/report/violin.svg" runtime-big-table.svg
+cp "target/criterion/Runtime - Teams/report/violin.svg" runtime-teams.svg
+
+perl -0777 -ne 'while(m/^(Compiled.*)\/[\r\n]? +(time:.+)/gm){print "$1  $2\n";}' "$output"
+perl -0777 -ne 'while(m/^(Runtime.*)\/[\r\n]? +(time:.+)/gm){print "$1  $2\n";}' "$output"

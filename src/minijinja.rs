@@ -1,6 +1,6 @@
 use criterion;
+use minijinja::{context, Environment};
 use serde::Serialize;
-use tera::{Context, Tera};
 
 pub fn big_table(b: &mut criterion::Bencher<'_>, size: &usize) {
     let mut table = Vec::with_capacity(*size);
@@ -12,15 +12,21 @@ pub fn big_table(b: &mut criterion::Bencher<'_>, size: &usize) {
         table.push(inner);
     }
 
-    let mut tera = Tera::default();
-    tera.add_raw_templates(vec![("big-table.html", BIG_TABLE_TEMPLATE)])
+    let mut env = Environment::new();
+    env.add_template("big-table.html", BIG_TABLE_TEMPLATE)
         .unwrap();
-    let mut ctx = Context::new();
-    ctx.insert("table", &table);
+    let tmpl = env.get_template("big-table.html").unwrap();
+    let ctxt = context!(table => &table);
 
-    let _ = tera.render("big-table.html", &ctx).unwrap();
-    b.iter(|| tera.render("big-table.html", &ctx));
+    let _ = tmpl.render(&ctxt).unwrap();
+    b.iter(|| tmpl.render(&ctxt));
 }
+
+static BIG_TABLE_TEMPLATE: &'static str = "<table>
+  {% for row in table %}
+    <tr>{% for col in row %}<td>{{ col }}</td>{% endfor %}</tr>
+  {% endfor %}
+</table>";
 
 #[derive(Serialize)]
 struct Team {
@@ -28,23 +34,14 @@ struct Team {
     score: u8,
 }
 
-// Tera doesn't allow `escape` on number values
-static BIG_TABLE_TEMPLATE: &'static str = "<table>
-  {% for row in table %}
-    <tr>{% for col in row %}<td>{{ col }}</td>{% endfor %}</tr>
-  {% endfor %}
-</table>";
-
 pub fn teams(b: &mut criterion::Bencher<'_>, _: &usize) {
-    let mut tera = Tera::default();
-    tera.add_raw_templates(vec![("teams.html", TEAMS_TEMPLATE)])
-        .unwrap();
-    let mut ctx = Context::new();
-    ctx.insert("year", &2015);
-    ctx.insert(
-        "teams",
-        &vec![
-            Team {
+    let mut env = Environment::new();
+    env.add_template("teams.html", TEAMS_TEMPLATE).unwrap();
+    let tmpl = env.get_template("teams.html").unwrap();
+    let ctxt = context! {
+      year => 2015,
+      teams => vec![
+             Team {
                 name: "Jiangsu".into(),
                 score: 43,
             },
@@ -60,11 +57,11 @@ pub fn teams(b: &mut criterion::Bencher<'_>, _: &usize) {
                 name: "Shandong".into(),
                 score: 12,
             },
-        ],
-    );
+      ]
+    };
 
-    let _ = tera.render("teams.html", &ctx).unwrap();
-    b.iter(|| tera.render("teams.html", &ctx));
+    let _ = tmpl.render(&ctxt).unwrap();
+    b.iter(|| tmpl.render(&ctxt));
 }
 
 static TEAMS_TEMPLATE: &'static str = r#"<html>
@@ -75,7 +72,7 @@ static TEAMS_TEMPLATE: &'static str = r#"<html>
     <h1>CSL {{ year }}</h1>
     <ul>
     {% for team in teams %}
-      <li class=\"{% if loop.first %}champion{% endif %}\">
+      <li class="{% if loop.first %}champion{% endif %}">
       <b>{{team.name}}</b>: {{team.score}}
       </li>
     {% endfor %}

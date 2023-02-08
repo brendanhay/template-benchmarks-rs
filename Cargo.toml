@@ -7,7 +7,7 @@ edition = "2018"
 
 [dependencies]
 askama = { git = "https://github.com/djc/askama", branch = "main" }
-criterion = "0.3"
+criterion = { version = "0.4", features = ["html_reports"] }
 handlebars = { git = "https://github.com/sunng87/handlebars-rust" }
 horrorshow = { git = "https://github.com/Stebalien/horrorshow-rs" }
 liquid = { git = "https://github.com/cobalt-org/liquid-rust" }
@@ -21,6 +21,8 @@ serde_yaml = "0.9"
 tera = { git = "https://github.com/Keats/tera" }
 fomat-macros = { git = "https://github.com/krdln/fomat-macros" }
 maud = { git = "https://github.com/lambda-fairy/maud" }
+minijinja = { git = "https://github.com/mitsuhiko/minijinja" }
+ramhorns = { git = "https://github.com/maciejhirsz/ramhorns" }
 
 [build-dependencies]
 ructe = { git = "https://github.com/kaj/ructe" }

@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
-use ::handlebars::{to_json, Context, Handlebars};
 use criterion;
+use handlebars::{to_json, Context, Handlebars};
 use serde::Serialize;
 use serde_json;
 use serde_json::value::Value as Json;
@@ -37,9 +37,9 @@ struct BigTable {
 }
 
 static SOURCE: &'static str = "<html>
-    {{#each table as |n|}}
-        <tr>{{#each n as |v|}}<td>{{v}}</td>{{/each}}</tr>
-    {{/each}}
+  {{#each table as |n|}}
+    <tr>{{#each n as |v|}}<td>{{v}}</td>{{/each}}</tr>
+  {{/each}}
 </html>";
 
 pub fn teams(b: &mut criterion::Bencher<'_>, _: &usize) {
@@ -81,7 +81,7 @@ fn teams_data() -> BTreeMap<String, Json> {
     data
 }
 
-static TEAMS_TEMPLATE: &'static str = "<html>
+static TEAMS_TEMPLATE: &'static str = r#"<html>
   <head>
     <title>{{year}}</title>
   </head>
@@ -89,10 +89,10 @@ static TEAMS_TEMPLATE: &'static str = "<html>
     <h1>CSL {{year}}</h1>
     <ul>
     {{#each teams}}
-      <li class=\"{{#if @first}}champion{{/if}}\">
+      <li class="{{#if @first}}champion{{/if}}">
       <b>{{name}}</b>: {{score}}
       </li>
     {{/each}}
     </ul>
   </body>
-</html>";
+</html>"#;
