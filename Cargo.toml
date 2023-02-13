@@ -23,6 +23,7 @@ fomat-macros = { git = "https://github.com/krdln/fomat-macros" }
 maud = { git = "https://github.com/lambda-fairy/maud" }
 minijinja = { git = "https://github.com/mitsuhiko/minijinja" }
 ramhorns = { git = "https://github.com/maciejhirsz/ramhorns" }
+mustache = "0.9.0"
 
 [build-dependencies]
 ructe = { git = "https://github.com/kaj/ructe" }

@@ -4,12 +4,13 @@ pub mod handlebars;
 pub mod horrorshow_bench;
 pub mod liquid;
 pub mod markup_bench;
+pub mod maud_bench;
+pub mod minijinja;
+pub mod mustache;
+pub mod ramhorns;
 pub mod ructe;
 pub mod sailfish;
 pub mod std_write;
 pub mod tera;
-pub mod maud_bench;
-pub mod minijinja;
-pub mod ramhorns;
 
 include!(concat!(env!("OUT_DIR"), "/templates.rs"));

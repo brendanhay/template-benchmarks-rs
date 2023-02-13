@@ -2,7 +2,7 @@ use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
 use std::time::Duration;
 use template_benchmarks_rs::{
     askama_bench, fomat, handlebars, horrorshow_bench, liquid, markup_bench, maud_bench, minijinja,
-    ramhorns, ructe, sailfish, std_write, tera,
+    mustache, ramhorns, ructe, sailfish, std_write, tera,
 };
 
 // The measurement_time increase from the default of 5s to 6s allows some more leeway
@@ -35,6 +35,7 @@ macro_rules! runtime_templates {
         group.bench_with_input("Handlebars", &$size, |b, i| handlebars::$fun(b, i));
         group.bench_with_input("Liquid", &$size, |b, i| liquid::$fun(b, i));
         group.bench_with_input("Minijinja", &$size, |b, i| minijinja::$fun(b, i));
+        group.bench_with_input("Mustache", &$size, |b, i| mustache::$fun(b, i));
         group.bench_with_input("Ramhorns", &$size, |b, i| ramhorns::$fun(b, i));
         group.bench_with_input("Tera", &$size, |b, i| tera::$fun(b, i));
 

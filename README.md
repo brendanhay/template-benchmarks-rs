@@ -72,7 +72,6 @@ Teams/Maud            time: [105.82 ns 106.14 ns 106.51 ns]
 Teams/Ructe           time: [401.69 ns 401.92 ns 402.17 ns]
 Teams/Sailfish        time: [52.360 ns 52.457 ns 52.581 ns]
 Teams/write           time: [333.68 ns 335.51 ns 337.31 ns]
-
 ```
 
 ### Runtime
@@ -84,12 +83,14 @@ Teams/write           time: [333.68 ns 335.51 ns 337.31 ns]
 Big Table/Handlebars  time: [2.6925 ms 2.6956 ms 2.6988 ms]
 Big Table/Liquid      time: [3.8958 ms 3.8982 ms 3.9009 ms]
 Big Table/Minijinja   time: [989.33 µs 989.94 µs 990.53 µs]
+Big Table/Mustache    time: [370.46 µs 371.77 µs 372.77 µs]
 Big Table/Ramhorns    time: [220.90 µs 221.05 µs 221.23 µs]
 Big Table/Tera        time: [1.1439 ms 1.1450 ms 1.1462 ms]
 
 Teams/Handlebars      time: [3.0111 µs 3.0258 µs 3.0410 µs]
 Teams/Liquid          time: [4.4515 µs 4.4624 µs 4.4760 µs]
 Teams/Minijinja       time: [1.9768 µs 1.9782 µs 1.9797 µs]
+Teams/Mustache        time: [846.21 ns 853.09 ns 860.14 ns]
 Teams/Ramhorns        time: [265.00 ns 265.12 ns 265.25 ns]
 Teams/Tera            time: [3.1173 µs 3.1245 µs 3.1322 µs]
 ```
